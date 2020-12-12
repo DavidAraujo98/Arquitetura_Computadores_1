@@ -1,2 +1,3 @@
-# Arquitetura_Computadores_1
-Arquitetura de Computadores - AC-I
+# Arquitetura Computadores 1
+
+Resolução dos guiões práticos
