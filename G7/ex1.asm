@@ -9,7 +9,7 @@ str1:	.asciiz "Arquitetura de Computadores I"
 strlen:	li $t0, 0
 while:	lb $t1, 0($a0)
 	addiu $a0, $a0, 1
-	beq $t1, '\0', ewhile«
+	beq $t1, '\0', ewhile
 	addi $t0, $t0, 1
 	j while
 ewhile: move $v0, $t0

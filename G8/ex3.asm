@@ -43,6 +43,8 @@ eif:	sll		$a0, $a0, 1
 		lw		$s4, 20($sp)
 		addiu	$sp, $sp, 20
 		
+		jr		$ra
+		
 # i:			$s0
 # bit:			$s1
 # quociente:	$s2
