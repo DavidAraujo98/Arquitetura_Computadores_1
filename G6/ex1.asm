@@ -12,31 +12,32 @@ array:	.word str1, str2, str3
 	.text
 	.globl main
 
-main:	li $t0, 0
+main:	li	$t0, 0
 
-for:	bge $t0, SIZE, efor
+for:	bge	$t0, SIZE, efor
 
-	la $t1, array
+	la	$t1, array
 	
-	sll $t2, $t0, 2
-	addu $t2, $t2, $t1 	
+	sll	$t2, $t0, 2
+	addu	$t2, $t2, $t1 	
 	
-	lw $a0, 0($t2)
-	li $v0, print_string
+	lw	$a0, 0($t2)
+	li	$v0, print_string
 	syscall
 	
-	li $a0, '\n'
-	li $v0, print_char
+	li	$a0, '\n'
+	li	$v0, print_char
 	syscall
 
-	addi $t0, $t0, 1
-	j for
+	addi	$t0, $t0, 1
+	
+	j	for
 
-efor:	jr $ra
+efor:	jr	$ra
 
-# i:		$t0
+# i:	$t0
 # array:	$t1
-# ck:		$t2
+# ck:	$t2
 #
 #define SIZE 3
 #void main(void) {
