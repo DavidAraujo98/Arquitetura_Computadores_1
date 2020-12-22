@@ -1,5 +1,4 @@
-
-	.globl strlen
+	.text
 	.globl exchange
 	.globl strrev
 	.globl strlen
@@ -10,14 +9,15 @@
 	.globl itoa
 	.globl toascii
 
-strlen:	li $t0, 0
-while:	lb $t1, 0($a0)
-	addiu $a0, $a0, 1
-	beq $t1, '\0', ewhile
-	addi $t0, $t0, 1
-	j while
-ewhile: move $v0, $t0
-	jr $ra
+strlen:	li	$t0, 0
+while:	lb	$t1, 0($a0)
+	addiu	$a0, $a0, 1
+	beq	$t1, '\0', ewhile
+	addi	$t0, $t0, 1
+	j	while
+
+ewhile:	move	$v0, $t0
+	jr	$ra
 
 # len:	$t0
 # s*:	$t1
@@ -31,12 +31,11 @@ ewhile: move $v0, $t0
 
 ###############
 
-exchange:
-	lb $t0, 0($a0)
-	lb $t1, 0($a1)
-	sb $t0, 0($a1)
-	sb $t1, 0($a0)
-	jr $ra
+exchange:	lb	$t0, 0($a0)
+		lb	$t1, 0($a1)
+		sb	$t0, 0($a1)
+		sb	$t1, 0($a0)
+		jr	$ra
 
 #void exchange(char *c1, char *c2) {
 #	char aux = *c1;
@@ -46,37 +45,37 @@ exchange:
 
 ###############
 
-strrev:	addiu $sp, $sp, -16
-	sw $ra, 0($sp)
-	sw $s0, 4($sp)
-	sw $s1, 8($sp)
-	sw $s2, 12($sp)
-	move $s0, $a0
-	move $s1, $a0
-	move $s2, $a0 
+strrev:	addiu	$sp, $sp, -16
+	sw	$ra, 0($sp)
+	sw	$s0, 4($sp)
+	sw	$s1, 8($sp)
+	sw	$s2, 12($sp)
+	move	$s0, $a0
+	move	$s1, $a0
+	move	$s2, $a0 
 
-whl1:	lb $s3, 0($s2)
-	beq $s3, '\0', ewhl1
-	addi $s2, $s2,1
-	j whl1
+whl11:	lb	$s3, 0($s2)
+	beq	$s3, '\0', ewhl11
+	addi	$s2, $s2,1
+	j	whl11
 	
-ewhl1:	sub $s2, $s2,1
+ewhl11:	sub	$s2, $s2,1
 	
-whl2:	bge $s1, $s2, ewhl2
-	move $a0, $s1
-	move $a1, $s2
-	jal exchange
-	addi $s1, $s1,1
-	sub $s2, $s2, 1
-	j wlh2
+whl112:	bge	$s1, $s2, ewh1l2
+	move	$a0, $s1
+	move	$a1, $s2
+	jal	exchange
+	addi	$s1, $s1,1
+	sub	$s2, $s2, 1
+	j	whl112
 	
-ewhl2:	move $v0, $s0
-	sw $ra, 0($sp)
-	sw $s0, 4($sp)
-	sw $s1, 8($sp)
-	sw $s2, 12($sp)
-	addiu $sp, $sp, 16
-	jr $ra
+ewh1l2:	move	$v0, $s0
+	sw	$ra, 0($sp)
+	sw	$s0, 4($sp)
+	sw	$s1, 8($sp)
+	sw	$s2, 12($sp)
+	addiu	$sp, $sp, 16
+	jr	$ra
 
 # str:	$a0
 # p1:	$s1
@@ -98,41 +97,20 @@ ewhl2:	move $v0, $s0
 
 ###############
 
-strlen:	li $t0, 0
-while:	lb $t1, 0($a0)
-	addiu $a0, $a0, 1
-	beq $t1, '\0', ewhile
-	addi $t0, $t0, 1
-	j while
-ewhile: move $v0, $t0
-	jr $ra
+strcpy:	move	$t0, $a0
+	move	$t1, $a1
 	
-# len:	$t0
-# s*:	$t1
-#
-#int strlen(char *s){
-#	int len=0;
-#	while(*s++ != '\0')
-#		len++;
-#	return len;
-#}
-
-###############
-
-strcpy:	move $t0, $a0
-	move $t1, $a1
+do:	lb	$t2, 0($t1)
+	sb	$t2, 0($t0)
 	
-do:	lb $t2, 0($t1)
-	sb $t2, 0($t0)
+	addi	$t0, $t0, 1
+	addi	$t1, $t1, 1
 	
-	addi $t0, $t0, 1
-	addi $t1, $t1, 1
+	bne	$t2, '\0', do
 	
-	bne $t2, '\0', do
+	move	$v0, $a0
 	
-	move $v0, $a0
-	
-	jr $ta
+	jr	$ra
 
 #char *strcpy(char *dst, char *src){
 #	char *p=dst;
@@ -144,31 +122,31 @@ do:	lb $t2, 0($t1)
 
 ###############
 
-strcat:	addiu $sp, $sp, -16
-	sw $ra, 0($sp)
-	sw $s0, 4($sp)
-	sw $s1, 8($sp)
-	sw $s2, 12($sp)
+strcat:	addiu	$sp, $sp, -16
+	sw	$ra, 0($sp)
+	sw	$s0, 4($sp)
+	sw	$s1, 8($sp)
+	sw	$s2, 12($sp)
 	
-	move $s0, $a0
-	move $s1, $a1
+	move	$s0, $a0
+	move	$s1, $a1
 	
-whl:	lb $s2, 0($s0)
-	beq $s2, '\0', ewhl
-	addi $s2, $s2, 1
-	j whl
+whl23:	lb	$s2, 0($s0)
+	beq	$s2, '\0', ewhl23
+	addi	$s2, $s2, 1
+	j	whl23
 
-ewhl:	move $a0, $s2
-	move $a1, $s1
-	jal strcopy
+ewhl23:	move	$a0, $s2
+	move	$a1, $s1
+	jal	strcpy
 	
-	lw $ra, 0($sp)
-	lw $s0, 4($sp)
-	lw $s1, 8($sp)
-	lw $s2, 12($sp)	
-	addiu $sp, $sp, 16
+	lw	$ra, 0($sp)
+	lw	$s0, 4($sp)
+		lw		$s1, 8($sp)
+		lw		$s2, 12($sp)	
+		addiu	$sp, $sp, 16
 	
-	jr $ra
+		jr		$ra
 
 # dst:	$s0
 # src:	$s1
@@ -184,19 +162,19 @@ ewhl:	move $a0, $s2
 
 ###############
 
-atoi:	li $v0, 0
-whl:	lb $t0, 0($a0)
-	blt $t0, '0', ewhl
-	bgt $t0, '9', ewhl
+atoi:	li	$v0, 0
+whl32:	lb	$t0, 0($a0)
+	blt	$t0, '0', ewhl32
+	bgt	$t0, '9', ewhl32
 	
-	sub $t1, $a0, '0'
-	addiu $a0, $a0, 1
+	sub	$t1, $a0, '0'
+	addiu	$a0, $a0, 1
 	
-	mul $v0, $v0, 10
-	add $v0, $v0, $t1
-	j whl
+	mul	$v0, $v0, 10
+	add	$v0, $v0, $t1
+	j	whl32
 
-ewhl:	jr $ra	
+ewhl32:	jr	$ra	
 
 # Mapa de registos
 # res:		$v0
@@ -214,28 +192,27 @@ ewhl:	jr $ra
 
 ###############
 
-atoib:	li $v0, 0
-		li $t1, 0
+atoib:	li	$v0, 0
+	li	$t1, 0
 	
-whl:	lb $t0, 0($a0)
-		beq $t0, '\0', ewhl
+whl4:	lb	$t0, 0($a0)
+	beq	$t0, '\0', ewhl4
 		
-if:		bne $t0, '1', else
-		li $t3, 0	#  i = 0
-		li $t2, 1	#  temp = 1 
+if4:	bne	$t0, '1', else4
+	li	$t3, 0	#  i = 0
+	li	$t2, 1	#  temp = 1 
 	
-whl1:	mul $t2, $t2, 2
-		addi $t3, $t3, 1
-		blt $t3, $t1, whl1
-	
+whl14:	mul	$t2, $t2, 2
+	addi	$t3, $t3, 1
+	blt	$t3, $t1, whl14
 		
-else:	add $v0, $v0, $t2
+else4:	add	$v0, $v0, $t2
 	
-		addi $t1, $t1, 1
-		addiu $a0, $a0, 1
-		j whl
+	addi 	$t1, $t1, 1
+	addiu 	$a0, $a0, 1
+	j	whl4
 
-ewhl:	jr $ra	
+ewhl4:	jr 	$ra	
 
 # int ii = 0
 # int temp = 0	
@@ -258,7 +235,7 @@ ewhl:	jr $ra
 
 itoa:	addiu	$sp, $sp, -16
 	sw	$ra, 0($sp)
-	sw 	$s0, 4($sp)
+	sw	$s0, 4($sp)
 	sw	$s1, 8($sp)
 	sw	$s2, 12($sp)
 	
@@ -267,14 +244,14 @@ itoa:	addiu	$sp, $sp, -16
 	move 	$s2, $a2
 	move 	$s3, $a2
 	
-do:	rem	$t0, $a0, $a1
+do5:	rem	$t0, $a0, $a1
 	div	$s0, $s0, $a1
 	jal 	toascii
 	
 	sb	$v0, 0($s3)
 	addiu 	$s3, $s3, 1 
 	
-	bgt	$s0, 0, do
+	bgt	$s0, 0, do5
 
 	sb	$0, 0($s3)
 
@@ -283,17 +260,17 @@ do:	rem	$t0, $a0, $a1
 	move	$s2, $v0
 	
 	lw	$ra, 0($sp)
-	lw 	$s0, 4($sp)
+	lw	$s0, 4($sp)
 	lw	$s1, 8($sp)
 	lw	$s2, 12($sp)
 	addiu	$sp, $sp, 16
 	
-	jr $ra
+	jr	$ra
 	
-# n:		$a0 -> $s0
-# b:		$a1 -> $a1
-# s:		$a2 -> $s2
-# p:		$s3
+# n:	$a0 -> $s0
+# b:	$a1 -> $a1
+# s:	$a2 -> $s2
+# p:	$s3
 # digit:	$t0	
 #
 #char *itoa(unsigned int n, unsigned int b, char *s) {
@@ -311,11 +288,11 @@ do:	rem	$t0, $a0, $a1
 
 ###############
 
-toascii:
-	addi	$a0, $a0, '0'
-	ble	$a0, '9', end
+toascii:	addi	$a0, $a0, '0'
+	ble	$a0, '9', end6
 	addi	$a0, $a0, 7
-end:	move	$v0, $a0
+
+end6:	move	$v0, $a0
 	jr	$ra
 
 #char toascii(char v) {

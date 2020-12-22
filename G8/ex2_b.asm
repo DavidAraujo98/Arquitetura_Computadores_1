@@ -1,63 +1,63 @@
-		.data
+	.data
 	
-		.eqv MAX, 33
-		.eqv read_int, 5
-		.eqv print_string, 4
+	.eqv MAX, 33
+	.eqv read_int, 5
+	.eqv print_string, 4
 	
 str:	.space MAX
 	
-		.text
-		.globl main
+	.text
+	.globl main
 	
 main:	addiu	$sp, $sp, -12
-		sw		$ra, 0($sp)
-		sw		$s1, 4($sp)
-		sw		$s2, 8($sp)
+	sw	$ra, 0($sp)
+	sw	$s1, 4($sp)
+	sw	$s2, 8($sp)
 	
-		li		$s1, 0
-		la		$s0, str
+	li	$s1, 0
+	la	$s0, str
 
-do:	li		$v0, read_int
+do:	li	$v0, read_int
 	syscall
 	move	$t1, $v0
 	
 	move	$a0, $s1
-	li		$a1, 2
+	li	$a1, 2
 	move	$a3, $s0
-	jal		itoa
+	jal	itoa
 	move	$a0, $v0
-	li		$v0, print_string
+	li	$v0, print_string
 	syscall
 	
 	move	$a0, $s1
-	li		$a1, 8
+	li	$a1, 8
 	move	$a3, $s0
-	jal		itoa
+	jal	itoa
 	move	$a0, $v0
-	li		$v0, print_string
+	li	$v0, print_string
 	syscall
 	
 	move	$a0, $s1
-	li		$a1, 16
+	li	$a1, 16
 	move	$a3, $s0
-	jal		itoa
+	jal	itoa
 	move	$a0, $v0
-	li		$v0, print_string
+	li	$v0, print_string
 	syscall
 	
-	bne		$s1, 0, do
+	bne	$s1, 0, do
 	
-	li		$v0, 0
+	li	$v0, 0
 	
-	lw		$ra, 0($sp)
-	lw		$s1, 4($sp)
-	lw		$s2, 8($sp)
+	lw	$ra, 0($sp)
+	lw	$s1, 4($sp)
+	lw	$s2, 8($sp)
 	addiu	$sp, $sp, 12
 		
-	jr		$ra
+	jr	$ra
 
-# val:		$s1
-# str:		$s0
+# val:	$s1
+# str:	$s0
 
 #define MAX_STR_SIZE 33
 #int main(void) {
