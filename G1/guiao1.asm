@@ -12,13 +12,13 @@ main:	ori	$v0,$0,5
 	sub	$t1,$t1,$t2
 	
 	or	$a0,$0,$t1
-	ori	$v0,$0,1	#print_int10
+	ori	$v0,$0,1		#print_int10
 	syscall
 	
-	#ori	$v0,$0,34	#print_int16
+	#ori	$v0,$0,34		#print_int16
 	#syscall
 	
-	#ori	$v0,$0,36	#print_intu10
+	#ori	$v0,$0,36		#print_intu10
 	#syscall
 	
 	jr	$ra
