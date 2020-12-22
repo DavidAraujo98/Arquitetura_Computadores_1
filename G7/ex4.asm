@@ -13,31 +13,31 @@ nline:	.asciiz "\n"
 
 ###############
 
-strcat:	addiu $sp, $sp, -16
-	sw $ra, 0($sp)
-	sw $s0, 4($sp)
-	sw $s1, 8($sp)
-	sw $s2, 12($sp)
+strcat:	addiu	$sp, $sp, -16
+	sw	$ra, 0($sp)
+	sw	$s0, 4($sp)
+	sw	$s1, 8($sp)
+	sw	$s2, 12($sp)
 	
-	move $s0, $a0
-	move $s1, $a1
+	move	$s0, $a0
+	move	$s1, $a1
 	
-whl:	lb $s2, 0($s0)
-	beq $s2, '\0', ewhl
-	addi $s2, $s2, 1
-	j whl
+whl:	lb	$s2, 0($s0)
+	beq	$s2, '\0', ewhl
+	addi	$s2, $s2, 1
+	j	whl
 
-ewhl:	move $a0, $s2
-	move $a1, $s1
-	jal strcopy
+ewhl:	move	$a0, $s2
+	move	$a1, $s1
+	jal	strcopy
 	
-	lw $ra, 0($sp)
-	lw $s0, 4($sp)
-	lw $s1, 8($sp)
-	lw $s2, 12($sp)	
-	addiu $sp, $sp, 16
+	lw	$ra, 0($sp)
+	lw	$s0, 4($sp)
+	lw	$s1, 8($sp)
+	lw	$s2, 12($sp)	
+	addiu	$sp, $sp, 16
 	
-	jr $ra
+	jr	$ra
 
 # dst:	$s0
 # src:	$s1
@@ -53,20 +53,20 @@ ewhl:	move $a0, $s2
 
 ###############
 
-strcpy:	move $t0, $a0
-	move $t1, $a1
+strcpy:	move	$t0, $a0
+	move	$t1, $a1
 	
-do:	lb $t2, 0($t1)
-	sb $t2, 0($t0)
+do:	lb	$t2, 0($t1)
+	sb	$t2, 0($t0)
 	
-	addi $t0, $t0, 1
-	addi $t1, $t1, 1
+	addi	$t0, $t0, 1
+	addi	$t1, $t1, 1
 	
-	bne $t2, '\0', do
+	bne	$t2, '\0', do
 	
-	move $v0, $a0
+	move	$v0, $a0
 	
-	jr $ta
+	jr	$ta
 
 #char *strcpy(char *dst, char *src){
 #	char *p=dst;
@@ -78,37 +78,37 @@ do:	lb $t2, 0($t1)
 
 ###############
 
-main:	addiu $sp, $sp, -4
-	sw $ra, 0($sp)
+main:	addiu	$sp, $sp, -4
+	sw	$ra, 0($sp)
 
-	la $a0, str2
-	la $a1, str1
+	la	$a0, str2
+	la	$a1, str1
 	
-	jal strcpy
+	jal	strcpy
 	
-	move $a0, $v0
-	li $v0, print_string
+	move	$a0, $v0
+	li	$v0, print_string
 	syscall
 	
-	la $a0, nline
-	li $v0, print_string
+	la	$a0, nline
+	li	$v0, print_string
 	syscall
 	
-	la $a0, str2
-	la $a1, str3
+	la	$a0, str2
+	la	$a1, str3
 	
-	jal strcat
+	jal	strcat
 	
-	move $a0, $v0
-	li $v0, print_string
+	move	$a0, $v0
+	li	$v0, print_string
 	syscall
 	
-	move $v0, $0
+	move	$v0, $0
 	
-	lw $ra, 0($sp)
-	addiu $sp, $sp, 4
+	lw	$ra, 0($sp)
+	addiu	$sp, $sp, 4
 	
-	jr $ra
+	jr	$ra
 
 #int main(void) {
 #	static char str1[]="Arquitetura de ";

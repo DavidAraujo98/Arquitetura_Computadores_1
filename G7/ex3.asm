@@ -4,6 +4,7 @@ str1:	.asciiz	"I serodatupmoC ed arutetiuqrA"
 str2:	.space 31
 str3:	.asciiz	"String too long: "
 str4:	.asciiz	"\n"
+	
 	.eqv SIZE, 30
 	.eqv MAX_SIZE, 31
 	.eqv print_string, 4
@@ -12,55 +13,54 @@ str4:	.asciiz	"\n"
 	.text
 	.globl main
 
-main:	addiu $sp, $sp, -4
-	sw $ra, 0($sp)
+main:	addiu	$sp, $sp, -4
+	sw	$ra, 0($sp)
 	
-	la $a0, str1
-	jal strlen
+	la	$a0, str1
+	jal	strlen
 
-if:	bgt $v0, MAX_SIZE, else
+if:	bgt	$v0, MAX_SIZE, else
 
-	la $a0, 
-	la $a1, str1
-	jal strcpy 
+	la	$a0, 
+	la	$a1, str1
+	jal	strcpy 
 	
-	move $t1, $v0
-	move $a0, $t1
-	li $v0, print_string
+	move	$t1, $v0
+	move	$a0, $t1
+	li	$v0, print_string
 	syscall
 	
-	la $a0, str4
-	li $v0, print_string
+	la	$a0, str4
+	li	$v0, print_string
 	syscall
 	
-	move $a0, $t1
-	jal strrev
-	move $a0, $v0
-	li $v0, print_string
+	move	$a0, $t1
+	jal	strrev
+	move	$a0, $v0
+	li	$v0, print_string
 	syscall
 
-	li $t0, 0
-	j end
+	li	$t0, 0
+	j	end
 
-else:	la $a0, str3
-	li $v0, print_string
-	syscall
-	
-	la $a0, str1
-	jal strlen
-	move $a0, $v0
-	li $v0, print_int10
+else:	la	$a0, str3
+	li	$v0, print_string
 	syscall
 	
-	li $t0, -1	
+	la	$a0, str1
+	jal	strlen
+	move	$a0, $v0
+	li	$v0, print_int10
+	syscall
+	
+	li	$t0, -1	
 
-end:	lw $ra, 0($sp)	
-	addiu $sp, $sp, 4
+end:	lw	$ra, 0($sp)	
+	addiu	$sp, $sp, 4
 
-	move $v0, $t0
-	jr $ra
-# 
-#
+	move	$v0, $t0
+	jr	$ra
+
 #define STR_MAX_SIZE 30
 #int main(void){
 #	static char str1[]="I serodatupmoC ed arutetiuqrA";
@@ -82,28 +82,28 @@ end:	lw $ra, 0($sp)
 
 ###############
 
-strcpy:	addiu $sp, $sp, -8
-	sw $s0, 0($sp)
-	sw $s1, 4($sp)
+strcpy:	addiu	$sp, $sp, -8
+	sw	$s0, 0($sp)
+	sw	$s1, 4($sp)
 	
-	li $t0, 0
-	move $s0, $a0
-	move $s1, $a1
+	li	$t0, 0
+	move	$s0, $a0
+	move	$s1, $a1
 	
-do:	addu $t1, $s0, $t0
-	addu $t2, $s1, $t0
+do:	addu	$t1, $s0, $t0
+	addu	$t2, $s1, $t0
 	
-	lb $t3, 0($t2)
-	sb $t3, 0($t1)
-	addi $t0, $t0, 1
-	bne $t3, '\0', do
-	move $v0, $s0
+	lb	$t3, 0($t2)
+	sb	$t3, 0($t1)
+	addi	$t0, $t0, 1
+	bne	$t3, '\0', do
+	move	$v0, $s0
 	
-	lw $s0, 0($sp)
-	lw $s1, 4($sp)
-	addiu $sp, $sp, 8
+	lw	$s0, 0($sp)
+	lw	$s1, 4($sp)
+	addiu	$sp, $sp, 8
 	
-	jr $ra
+	jr	$ra
 
 # dst:	$sp0
 # src:	$sp1
@@ -119,14 +119,16 @@ do:	addu $t1, $s0, $t0
 
 ###############
 
-strlen:	li $t0, 0
-while:	lb $t1, 0($a0)
-	addiu $a0, $a0, 1
-	beq $t1, '\0', ewhile«
-	addi $t0, $t0, 1
-	j while
-ewhile: move $v0, $t0
-	jr $ra
+strlen:	li	$t0, 0
+
+while:	lb	$t1, 0($a0)
+	addiu	$a0, $a0, 1
+	beq	$t1, '\0', ewhile«
+	addi	$t0, $t0, 1
+	j	while
+
+ewhile:	move	$v0, $t0
+	jr	$ra
 	
 # len:	$t0
 # s*:	$t1
@@ -140,37 +142,37 @@ ewhile: move $v0, $t0
 
 ###############
 
-strrev:	addiu $sp, $sp, -16
-	sw $ra, 0($sp)
-	sw $s0, 4($sp)
-	sw $s1, 8($sp)
-	sw $s2, 12($sp)
-	move $s0, $a0
-	move $s1, $a0
-	move $s2, $a0 
+strrev:	addiu	$sp, $sp, -16
+	sw	$ra, 0($sp)
+	sw	$s0, 4($sp)
+	sw	$s1, 8($sp)
+	sw	$s2, 12($sp)
+	move	$s0, $a0
+	move	$s1, $a0
+	move	$s2, $a0 
 
-whl1:	lb $s3, 0($s2)
-	beq $s3, '\0', ewhl1
-	addi $s2, $s2,1
-	j whl1
+whl1:	lb	$s3, 0($s2)
+	beq	$s3, '\0', ewhl1
+	addi	$s2, $s2,1
+	j	whl1
 	
-ewhl1:	sub $s2, $s2,1
+ewhl1:	sub	$s2, $s2,1
 	
-whl2:	bge $s1, $s2, ewhl2
-	move $a0, $s1
-	move $a1, $s2
-	jal exchange
-	addi $s1, $s1,1
-	sub $s2, $s2, 1
-	j wlh2
+whl2:	bge	$s1, $s2, ewhl2
+	move	$a0, $s1
+	move	$a1, $s2
+	jal	exchange
+	addi	$s1, $s1,1
+	sub	$s2, $s2, 1
+	j	wlh2
 	
-ewhl2:	move $v0, $s0
-	sw $ra, 0($sp)
-	sw $s0, 4($sp)
-	sw $s1, 8($sp)
-	sw $s2, 12($sp)
-	addiu $sp, $sp, 16
-	jr $ra
+ewhl2:	move	$v0, $s0
+	sw	$ra, 0($sp)
+	sw	$s0, 4($sp)
+	sw	$s1, 8($sp)
+	sw	$s2, 12($sp)
+	addiu	$sp, $sp, 16
+	jr	$ra
 
 # str:	$a0
 # p1:	$s1
